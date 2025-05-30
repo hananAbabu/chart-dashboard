@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>my last</title>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f5f7fa;
+  color: #333;
+}
+.navbar-brand{
+ 
+}
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+.card img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-row {
+  display: flex;
+  gap: 20px;
+}
+
+.card-row > .card {
+  flex: 1;
+}
+
+h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+/* Table Styles */
+.card-summary {
+      min-height: 120px;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Buttons */
+.btn-details {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.3s;
+}
+
+.btn-details:hover {
+  background-color: #2980b9;
+}
+.chart-container {
+  height: 300px;
+  position: relative;
+}
+
+
+/* Chart Containers */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container {
+  position: relative;
+  height: 250px;
+  margin-top: 10px;
+}
+
+/* Chart Legends */
+.chart-legend {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.color-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.color-box.sesame {
+  background-color: #3498db;
+}
+
+.color-box.soybean {
+  background-color: #e74c3c;
+}
+
+.color-box.teff {
+  background-color: #2ecc71;
+}
+.color-box.wheat {
+  background-color: #9b59b6;
+}
+
+/* Trend Indicators */
+.trend-up {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.trend-up::before {
+  content: "↑";
+  margin-right: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-row {
+    flex-direction: column;
+  }
+  
+  .chart-container {
+    height: 200px;
+  }
+}
+ /* Quick Stats Card */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.stat-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.highlight {
+  background-color: #e3f2fd;
+  border-left: 4px solid #3498db;
+}
+
+.stat-card .value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.stat-card .label {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #3498db;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+  .badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 600;
+    border-radius: 0.375rem;
+  }
+  .bg-success {
+    background-color: #198754;
+    color: white;
+  }
+  .bg-warning {
+    background-color: #ffc107;
+  }
+  .text-dark {
+    color: #212529 !important;
+  }
+  .bg-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+       
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    
+        .status-shipped {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        .status-transit {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        #search {
+            padding: 8px;
+            width: 300px;
+        }
+        select, button {
+            padding: 8px;
+        }
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .pagination-controls {
+            display: flex;
+            gap: 10px;
+        }
+        .page-info {
+            font-weight: bold;
+        }
+        .entries-selector {
+            margin-left: auto;
+        }
+
+</style>
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="https://i.pinimg.com/736x/dd/c9/f4/ddc9f4d9d40b5cff7168fcd18526e9bb.jpg"  class="rounded-circle" alt="Export Company Logo" height="40">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#export">Export Info</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-globe"></i> EN
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">English</a></li>
+              <li><a class="dropdown-item" href="#">Español</a></li>
+              <li><a class="dropdown-item" href="#">中文</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <header class="hero-section bg-light py-5" id="home">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">GreenPort Exports</h1>
+            <p class="lead"> “Shipping Green. Trading Clean.”</p>
+            <a href="#products" class="btn btn-primary btn-lg mt-3">Explore Products</a>
+        </div>
+    </header>
+
+  <div class="container my-4">
+      <h3>Export Statistics</h3>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="value"> 296</div>
+      <div class="label">Total Shipments</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🌍</div>
+      <div class="value">50</div>
+      <div class="label">Countries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🌱</div>
+      <div class="value">5</div>
+      <div class="label">Seed Types</div>
+    </div>
+    <div class="stat-card highlight">
+      <div class="stat-icon">🏆</div>
+      <div class="value">3,000 kg</div>
+      <div class="label">Largest Shipment</div>
+    </div>
+  </div>
+</div>
+<div class="card-container">
+  <div class="card" id="table">
+    <h3>Seed Export Dashboard</h3>
+    <div class="table-responsive">
+  <table id="seedTable" class="display">
+            <thead class="table-dark">
+      <tr>
+        <th>Batch ID</th>
+        <th>Seed Type</th>
+        <th>Quantity (kg)</th>
+        <th>Destination</th>
+        <th>Exported Company</th>
+        <th>Export Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+
+    <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+ <h5 class="card-title">Avarage profit Exports (in millions USD)</h5>
+       <div class="chart-container">
+        <canvas id="barChart"></canvas>
+     </div>
+</div>
+
+    <div class="card chart-card">
+ <h3>Export Volume Over Time</h3>
+       <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+      </div>
+    
+    <div class="card mb-4 shadow-sm">
+
+      <div class="chart-footer">
+        <span class="trend-up">12% from last month</span>
+      </div>
+      </div>  
+    </div> 
+    
+    </div>
+    <div class="card mb-4 shadow-sm">
+    <div class="card chart-card">
+      <h3>Seed Type Distribution</h3>
+      <div class="chart-container">
+        <canvas id="pieChart"></canvas>
+      </div>
+  </div>
+
+      <div class="chart-summary">
+        <p>Total Exported: <strong>9600 kg</strong></p>
+      </div>
+    </div>
+
+    <section id="products" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Export Products</h2>
+            
+      
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- Sesame Card -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="https://i.pinimg.com/736x/cd/25/84/cd2584142c90b7841a96d5dc6f2a653a.jpg" class="card-img-top" alt="Sesame Seeds">
+        <div class="card-body">
+          <h5 class="card-title">Sesame Seeds</h5>
+          <p class="card-text">Premium white sesame, organically harvested from the Humera region.</p>
+          <ul class="list-unstyled">
+            <li><strong>Origin:</strong> Ethiopia</li>
+            <li><strong>Quantity:</strong> 2,000 kg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soybean Card -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="https://i.pinimg.com/736x/14/90/23/14902367c2cd33b9dbceb866ea00a93a.jpg" class="card-img-top" alt="Soybean Seeds">
+        <div class="card-body">
+          <h5 class="card-title">Soybean Seeds</h5>
+          <p class="card-text">Non-GMO soybeans, ideal for processing and export, Grade A quality.</p>
+          <ul class="list-unstyled">
+            <li><strong>Origin:</strong> Ethiopia</li>
+            <li><strong>Quantity:</strong> 1,800 kg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+     <!-- Corn -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="https://i.pinimg.com/474x/c7/e7/5d/c7e75d24819758441fb09475ee8a959d.jpg" class="card-img-top" alt="Corn Seeds">
+        <div class="card-body">
+          <h5 class="card-title">Corn Seeds</h5>
+          <p class="card-text">Drought-resistant hybrid corn seeds suitable for diverse global climates.</p>
+          <ul class="list-unstyled">
+            <li><strong>Origin:</strong> Ethiopia</li>
+            <li><strong>Quantity:</strong> 3,000 kg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coffee -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="https://i.pinimg.com/736x/1d/13/ed/1d13ed3a29072cb382e8981a03d7417b.jpg" class="card-img-top" alt="Coffee Beans">
+        <div class="card-body">
+          <h5 class="card-title">Coffee Beans</h5>
+          <p class="card-text">Aromatic Arabica coffee beans from the Sidama highlands, hand-picked and sun-dried.</p>
+          <ul class="list-unstyled">
+            <li><strong>Origin:</strong> Ethiopia</li>
+            <li><strong>Quantity:</strong> 1,200 kg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wheat -->
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="https://i.pinimg.com/736x/7d/f7/ca/7df7cae228557d1f1164baccdd5538ac.jpg" class="card-img-top" alt="Wheat Seeds">
+        <div class="card-body">
+          <h5 class="card-title">Wheat Seeds</h5>
+          <p class="card-text">High-yield wheat seeds with excellent gluten strength for bread-making industries.</p>
+          <ul class="list-unstyled">
+            <li><strong>Origin:</strong> Ethiopia</li>
+            <li><strong>Quantity:</strong> 2,500 kg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+        </div>
+
+
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Contact Us</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="contactForm" novalidate>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Email" required>
+                        </div>
+                       <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Enquiry</button>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="map-container ratio ratio-16x9">
+                        <iframe src="  https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.6567168985694!2d38.69415779999999!3d9.003700500000013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b87001353d343%3A0x3a35fb214f90e255!2sBethel%20Square%20%7C%20Bethel!5e0!3m2!1sen!2set!4v1748027990552!5m2!1sen!2set"></iframe>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+<script>
+   const seedData = [
+  { batchId: "EXP001", seedType: "Sesame", quantity: 2000, destination: "Germany", exporter: "GreenExport PLC", exportDate: "2025-04-10", status: "Shipped" },
+  { batchId: "EXP002", seedType: "Soybean", quantity: 1500, destination: "Netherlands", exporter: "AgroSeed Co", exportDate: "2025-04-12", status: "In Transit" },
+  { batchId: "EXP003", seedType: "Coffee", quantity: 500, destination: "USA", exporter: "Exportse Ltd", exportDate: "2025-04-20", status: "Pending" },
+  { batchId: "EXP004", seedType: "Wheat", quantity: 1000, destination: "Canada", exporter: "Eastern European Seeds Ltd", exportDate: "2025-05-01", status: "Shipped" },
+  { batchId: "EXP005", seedType: "Corn", quantity: 1800, destination: "Germany", exporter: "GreenExport PLC", exportDate: "2025-05-05", status: "In Transit" },
+  { batchId: "EXP006", seedType: "Coffee", quantity: 2200, destination: "Belgium", exporter: "GlobalSeeds Inc", exportDate: "2025-05-08", status: "Shipped" },
+  { batchId: "EXP007", seedType: "Soybean", quantity: 3000, destination: "Japan", exporter: "Oriental Exports", exportDate: "2025-05-10", status: "Pending" },
+  { batchId: "EXP008", seedType: "Sunflower", quantity: 1200, destination: "France", exporter: "EuroSeed Partners", exportDate: "2025-05-12", status: "In Transit" },
+  { batchId: "EXP009", seedType: "soyabean", quantity: 1700, destination: "UK", exporter: "AgriTrade Ltd", exportDate: "2025-05-15", status: "Shipped" },
+  { batchId: "EXP010", seedType: "coffee", quantity: 900, destination: "Spain", exporter: "Mediterranean Seeds", exportDate: "2025-05-18", status: "Pending" },
+  { batchId: "EXP011", seedType: "coffee", quantity: 800, destination: "Italy", exporter: "Alpine Agro", exportDate: "2025-05-20", status: "In Transit" },
+  { batchId: "EXP012", seedType: "corn", quantity: 1100, destination: "Poland", exporter: "Eastern European Seeds", exportDate: "2025-05-22", status: "Shipped" },
+  { batchId: "EXP013", seedType: "sesame", quantity: 600, destination: "Portugal", exporter: "Iberian Exports", exportDate: "2025-05-25", status: "Pending" },
+  { batchId: "EXP014", seedType: "coffee", quantity: 1300, destination: "Australia", exporter: "Pacific Seed Co", exportDate: "2025-05-28", status: "In Transit" },
+  { batchId: "EXP015", seedType: "wheat", quantity: 750, destination: "Sweden", exporter: "Nordic Agri", exportDate: "2025-06-01", status: "Shipped" },
+  { batchId: "EXP016", seedType: "corn", quantity: 950, destination: "Norway", exporter: "Scandinavian Seeds", exportDate: "2025-06-05", status: "Pending" },
+  { batchId: "EXP017", seedType: "sunflower", quantity: 850, destination: "Denmark", exporter: "Baltic Exports", exportDate: "2025-06-08", status: "In Transit" },
+  { batchId: "EXP018", seedType: "sunflower", quantity: 2500, destination: "Turkey", exporter: "Anatolian Seeds", exportDate: "2025-06-10", status: "Shipped" },
+  { batchId: "EXP019", seedType: "Corn", quantity: 2000, destination: "Egypt", exporter: "Nile Agro", exportDate: "2025-06-12", status: "Pending" },
+  { batchId: "EXP020", seedType: "sunflower", quantity: 700, destination: "South Africa", exporter: "African Seed Co", exportDate: "2025-06-15", status: "In Transit" },
+  { batchId: "EXP021", seedType: "sesame", quantity: 1800, destination: "China", exporter: "Asia Seed Ltd", exportDate: "2025-06-18", status: "Shipped" },
+  { batchId: "EXP022", seedType: "Safflower", quantity: 650, destination: "India", exporter: "Indo Agri", exportDate: "2025-06-20", status: "Pending" },
+  { batchId: "EXP023", seedType: "sesame", quantity: 1400, destination: "Brazil", exporter: "Tropical Seeds", exportDate: "2025-06-22", status: "In Transit" },
+  { batchId: "EXP024", seedType: "Corn", quantity: 950, destination: "Argentina", exporter: "Pampas Exports", exportDate: "2025-06-25", status: "Shipped" },
+  { batchId: "EXP025", seedType: "sesame", quantity: 550, destination: "Chile", exporter: "Andean Seeds", exportDate: "2025-06-28", status: "Pending" },
+  { batchId: "EXP026", seedType: "sesame", quantity: 1250, destination: "Mexico", exporter: "Latin American Seeds", exportDate: "2025-07-01", status: "In Transit" },
+  { batchId: "EXP027", seedType: "sunflower", quantity: 850, destination: "South Korea", exporter: "East Asian Exports", exportDate: "2025-07-05", status: "Shipped" },
+  { batchId: "EXP028", seedType: "sunflower", quantity: 1100, destination: "Vietnam", exporter: "Mekong Agri", exportDate: "2025-07-08", status: "Pending" },
+  { batchId: "EXP029", seedType: "coffee ", quantity: 750, destination: "Thailand", exporter: "Golden Seed Co", exportDate: "2025-07-10", status: "In Transit" },
+  { batchId: "EXP030", seedType: "Wheat", quantity: 600, destination: "Malaysia", exporter: "Tropical Exports", exportDate: "2025-07-12", status: "Shipped" },
+  { batchId: "EXP031", seedType: "coffee", quantity: 900, destination: "Singapore", exporter: "Asia Pacific Seeds", exportDate: "2025-07-15", status: "Pending" },
+  { batchId: "EXP032", seedType: "Soybean", quantity: 800, destination: "palastine", exporter: "Middle East Agri", exportDate: "2025-07-18", status: "In Transit" },
+  { batchId: "EXP033", seedType: "sunflower", quantity: 500, destination: "Saudi Arabia", exporter: "Gulf Seed Co", exportDate: "2025-07-20", status: "Shipped" },
+  { batchId: "EXP034", seedType: "sesame", quantity: 700, destination: "UAE", exporter: "Desert Seeds", exportDate: "2025-07-22", status: "Pending" },
+  { batchId: "EXP035", seedType: "coffee", quantity: 950, destination: "Qatar", exporter: "Arabian Agri", exportDate: "2025-07-25", status: "In Transit" },
+  { batchId: "EXP036", seedType: "Wheat", quantity: 450, destination: "Kuwait", exporter: "Gulf Exports", exportDate: "2025-07-28", status: "Shipped" },
+  { batchId: "EXP037", seedType: "coffee", quantity: 650, destination: "Oman", exporter: "Omani Seed Co", exportDate: "2025-08-01", status: "Pending" },
+  { batchId: "EXP038", seedType: "coffee", quantity: 550, destination: "Jordan", exporter: "Levant Seeds", exportDate: "2025-08-05", status: "In Transit" },
+  { batchId: "EXP039", seedType: "Soybean", quantity: 850, destination: "Lebanon", exporter: "Mediterranean Exports", exportDate: "2025-08-08", status: "Shipped" },
+  { batchId: "EXP040", seedType: "sunflower", quantity: 500, destination: "Iraq", exporter: "Mesopotamian Seeds", exportDate: "2025-08-10", status: "Pending" },
+  { batchId: "EXP041", seedType: "Wheat", quantity: 400, destination: "Iran", exporter: "Persian Agri", exportDate: "2025-08-12", status: "In Transit" },
+  { batchId: "EXP042", seedType: "Soybean", quantity: 350, destination: "Pakistan", exporter: "Indus Seed Co", exportDate: "2025-08-15", status: "Shipped" },
+  { batchId: "EXP043", seedType: "Corn", quantity: 200, destination: "Bangladesh", exporter: "Delta Exports", exportDate: "2025-08-18", status: "Pending" },
+  { batchId: "EXP044", seedType: "Soybean", quantity: 300, destination: "Sri Lanka", exporter: "Island Seeds", exportDate: "2025-08-20", status: "In Transit" },
+  { batchId: "EXP045", seedType: "sunflower", quantity: 250, destination: "Nepal", exporter: "Himalayan Agri", exportDate: "2025-08-22", status: "Shipped" },
+  { batchId: "EXP046", seedType: "sunflower", quantity: 400, destination: "Bhutan", exporter: "Mountain Seeds", exportDate: "2025-08-25", status: "Pending" },
+  { batchId: "EXP047", seedType: "Wheat", quantity: 450, destination: "Myanmar", exporter: "Golden Land Exports", exportDate: "2025-08-28", status: "In Transit" },
+  { batchId: "EXP048", seedType: "Corn", quantity: 600, destination: "Laos", exporter: "Mekong Seed Co", exportDate: "2025-09-01", status: "Shipped" },
+  { batchId: "EXP049", seedType: "Soybean", quantity: 800, destination: "Cambodia", exporter: "Angkor Agri", exportDate: "2025-09-05", status: "Pending" },
+  { batchId: "EXP050", seedType: "sunflower", quantity: 550, destination: "Philippines", exporter: "Pacific Rim Seeds", exportDate: "2025-09-08", status: "In Transit" }
+];
+
+
+  const statusClassMap = {
+    "Shipped": "bg-success",
+    "In Transit": "bg-warning text-dark",
+    "Pending": "bg-secondary"
+  };
+
+  const tbody = document.getElementById("tableBody");
+
+  seedData.forEach(seed => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${seed.batchId}</td>
+      <td>${seed.seedType}</td>
+      <td>${seed.quantity}</td>
+      <td>${seed.destination}</td>
+      <td>${seed.exporter}</td>
+      <td>${seed.exportDate}</td>
+      <td><span class="badge ${statusClassMap[seed.status] || ''}">${seed.status}</span></td>
+      <td><button class="btn-details">View</button></td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize DataTable
+  $('#seedTable').DataTable({
+    responsive: true,
+    dom: '<"top"f>rt<"bottom"lip><"clear">',
+    pageLength: 5
+  });
+
+  // Bar Chart - Export Volume by Country
+
+
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['2020', '2021', '2022', '2023','2024', '2025'],
+        datasets: [{
+          label: 'Exports (in millions USD)',
+          data:  [45, 60, 25, 70, 85, 105],
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  // Line Chart - Export Volume Over Time
+  
+    new Chart(document.getElementById('lineChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['2020','2021','2022', '2023', '2024','2025'],
+        datasets: [{
+          label: 'Export Volume Over Time',
+          data: [1200, 1500, 500, 1000, 1800,2000],
+          borderColor: '#2196F3',
+          fill: false
+        }]
+      }
+    });
+    
+
+  // Pie Chart - Seed Type Distribution
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Sesame', 'coffee','wheat', 'corn', 'soyabean'],
+      datasets: [{
+        data: [3000, 3300, 500, 1000, 1800, ],
+        backgroundColor: [
+          '#3498db',
+          '#e74c3c',
+          '#2ecc71',
+          '#f1c40f',
+          '#e67e22',
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = Math.round((value / total) * 100);
+              return `${label}: ${value} kg (${percentage}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Add click handlers for detail buttons
+  document.querySelectorAll('.btn-details').forEach(button => {
+    button.addEventListener('click', function() {
+      const row = this.closest('tr');
+      const batchId = row.cells[0].textContent;
+      alert(`Showing details for batch ${batchId}`);
+    });
+  });
+});
+// Animate stat cards on hover
+document.querySelectorAll('.stat-card').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-5px)';
+    this.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.1)';
+  });
+  
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0)';
+    this.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.08)';
+  });
+});
+</script>
+
+
+
+</section>
+</div>
+</div>
+</div>
+
+
+
+<footer class="bg-dark text-light pt-5 pb-4 mt-5">
+  <div class="container text-md-left">
+    <div class="row">
+
+      <!-- Company Info -->
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+        <h5 class="text-uppercase fw-bold mb-4">Green Port </h5>
+        <p>Exporting Ethiopia’s finest seeds to the world. Trusted quality, sustainable partnerships.</p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
+        <h6 class="text-uppercase fw-bold mb-3">Contact</h6>
+        <p><i class="fas fa-map-marker-alt me-2"></i> Addis Ababa, Ethiopia</p>
+        <p><i class="fas fa-envelope me-2"></i> info@GreenPort.com</p>
+        <p><i class="fas fa-phone me-2"></i> +251 911 234 567</p>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-3 col-lg-3 col-xl-2 mx-auto mb-4">
+        <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
+        <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="#" class="text-light me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+        <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-light mt-4">
+    <small>&copy; 2025 Green Port Export. All rights reserved.</small>
+  </div>
+</footer>
+
+</body>
+</html>
